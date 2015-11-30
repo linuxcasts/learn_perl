@@ -1,0 +1,80 @@
+#!/usr/bin/env perl 
+#===============================================================================
+#
+#         FILE: perl_insert.pl
+#
+#        USAGE: ./perl_insert.pl  
+#
+#  DESCRIPTION: 
+#
+#      OPTIONS: ---
+# REQUIREMENTS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: YOUR NAME (), 
+# ORGANIZATION: 
+#      VERSION: 1.0
+#      CREATED: 11/18/2015 01:55:36 PM
+#     REVISION: ---
+#===============================================================================
+
+use strict;
+use warnings;
+use utf8;
+use v5.10;
+
+use DBI;
+
+#mysql database configurations
+my	$dsn="DBI:mysql:test";
+my	$username="root";
+my	$password="123456";
+
+say "perl mysql connect demo";
+
+#connect to mysql
+my	%attr=(printerror => 0,raiserror => 1);
+my	$dbh=DBI->connect($dsn,$username,$password,\%attr);
+
+
+my	$sth=$dbh->prepare("select num,address from perlinks");
+$sth->execute();
+while (my @row = $sth->fetchrow_array()) {
+		print "$row[0],$row[1]\n";
+}
+
+
+
+=begin
+#query data from table
+query_perl();
+
+sub query_perl {
+	my  ($dbh) = @_;
+#	my	$sql="select num,address from perlinks";
+	my	$sth=$dbh->prepare("select num,address from perlinks");
+	#execute query
+	$sth->execute();
+	while (my @row = $sth->fetchrow_array()) {
+		printf("%s\t%s,$row[0],$row[1]");
+	}
+	$sth->finish();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,153 @@
+#!/usr/bin/env perl 
+#===============================================================================
+#
+#         FILE: list_drivers.pl
+#
+#        USAGE: ./list_drivers.pl  
+#
+#  DESCRIPTION: 
+#
+#      OPTIONS: ---
+# REQUIREMENTS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: YOUR NAME (), 
+# ORGANIZATION: 
+#      VERSION: 1.0
+#      CREATED: 11/20/2015 01:58:13 PM
+#     REVISION: ---
+#===============================================================================
+
+use strict;
+use warnings;
+use utf8;
+use DBI;
+
+#the connect() methods  $dbh=$database_handle
+#$dbh=DBI->connect("DBI:<RDMS>:<database>","<username>","password") or die "failed connect to mysql because:$DBI->errstr"
+#$dbh=DBI->connect($dsn,$username,$passwd,{ PrintError => 0, RaiseError => 1, AutoCommit => 0 });
+
+my	$dsn="DBI:mysql:test";
+my	$username="test";
+my	$password="123456";
+
+{
+my $dbh=DBI->connect($dsn,$username,$password,{ PrintError => 0, RaiseError => 1, AutoCommit => 0 });
+print "connect to mysql successfully\n";
+print "address name:";
+chomp(my $address=<STDIN>);
+#sth=sql_statement_handle
+my	$sth=$dbh->prepare("select count(*) from perlinks where address=?") or die "can't prepare sql statement".DBI->errst;
+$sth->execute($address);
+print "number of row will be deleted:",$sth->fetchrow_array,"\n";
+my	$num=$dbh->do(qq/delete from perlinks where address=?/,undef,$address);
+print ($num>1?"$num rows deleted.\n":"$num row deleted.\n");
+$sth->finish();
+$dbh->disconnect();
+}
+
+{
+my $dbh=DBI->connect($dsn,$username,$password,{ PrintError => 0, RaiseError => 1, AutoCommit => 0 });
+print "connect to mysql successfully\n";
+my	$sth=$dbh->prepare("select num,address from perlinks") or die "can't prepare sql statement".DBI->errst;
+$sth->execute() or die "can't execute sth:".DBI->errsrt;
+print "use sth->dump_results:\n";
+print $sth->dump_results();
+$dbh->disconnect();
+}
+
+{
+my $dbh=DBI->connect($dsn,$username,$password,{ PrintError => 0, RaiseError => 1, AutoCommit => 0 });
+print "connect to mysql successfully\n";
+my	$sth=$dbh->prepare("select num,address from perlinks") or die "can't prepare sql statement".DBI->errst;
+$sth->execute() or die "can't execute sth:".DBI->errsrt;
+#while (my @var=$sth->fetchrow_array()) {          #use array get returned data 
+#	print "num=$var[0]\t";
+#	print "address=$var[1]\n";
+#}  
+#while (my($num,$address)=$sth->fetchrow_array()) { #use scalar list get returned data
+#	print "num=$num,address=$address\n";
+#}
+my	@stash;
+while (my $array_ref=$sth->fetchrow_arrayref) {
+	push @stash,[$array_ref];
+}
+foreach my $array_ref (@stash) {
+	print "row:$array_ref\n";
+}
+print "use sth->rows:\n";
+print $sth->rows();
+$dbh->disconnect();
+}
+
+=begin
+{
+my $dbh=DBI->connect($dsn,$username,$password,{ PrintError => 0, RaiseError => 1, AutoCommit => 0 });
+print "connect to mysql successfully\n";
+my	$sth=$dbh->prepare("insert into perlinks(address) values(?)") 
+                            	or die "can't prepare sql statement".DBI->errst;
+my $row=0;
+while (<>) {
+	chomp;
+	(my $firstname)=split(/:/);
+	$sth->execute($firstname);
+	$row+=$sth->rows();
+}
+$dbh->disconnect();
+}
+=cut
+
+
+{
+my $dbh=DBI->connect($dsn,$username,$password,{ PrintError => 0, RaiseError => 1, AutoCommit => 0 });
+print "connect to mysql successfully\n";
+#my	$row=$dbh->do("insert into perlinks(address) values('www.taobao.com')") or die "because:".$DBI::errstr;
+#print "$row row(s) added into perlinks table\n";
+#my	$sth=$dbh->prepare("insert into perlinks(address) values(?)");
+#my	$address="www.sohu.com"; #set value here
+#$sth->execute($address);
+#foreach my $address (qw/www.tmall.com www.bing.com/) {
+#	$sth->execute($address);
+#}
+my ($num,$address)=$dbh->selectrow_array("select num,address from perlinks"); #return table's first column
+print "perlinks table:num $num address $address\n";
+my $sth=$dbh->prepare("select num,address from perlinks");
+$sth->execute();
+my	$array_ref=$sth->fetchall_arrayref();
+foreach my $row (my @array_ref) {
+	my ($num,$address)=@$row;
+	print "perlinks table:num $num address $address\n";
+}
+my $array_refa=$sth->fetchrow_arrayref({num=>1,address=>1});
+foreach my $rows (my @array_refa) {
+	print "perlinks table:num $rows->{num},address $rows->{address}\n";
+}
+$dbh->disconnect();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

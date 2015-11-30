@@ -1,0 +1,26 @@
+#!/usr/bin/env perl 
+#===============================================================================
+#
+#         FILE: file_spec.pl
+#
+#        USAGE: ./file_spec.pl  
+#
+#  DESCRIPTION: 
+#
+#      OPTIONS: ---
+# REQUIREMENTS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: YOUR NAME (), 
+# ORGANIZATION: 
+#      VERSION: 1.0
+#      CREATED: 11/25/2015 09:46:45 AM
+#     REVISION: ---
+#===============================================================================
+
+use strict;
+use warnings;
+use utf8;
+use File::Spec::Unix;
+use v5.01;
+

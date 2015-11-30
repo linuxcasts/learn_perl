@@ -1,0 +1,87 @@
+#!/usr/bin/env perl 
+#===============================================================================
+#
+#         FILE: perl_mysql.pl
+#
+#        USAGE: ./perl_mysql.pl  
+#
+#  DESCRIPTION: 
+#
+#      OPTIONS: ---
+# REQUIREMENTS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: YOUR NAME (), 
+# ORGANIZATION: 
+#      VERSION: 1.0
+#      CREATED: 11/19/2015 10:10:45 AM
+#     REVISION: ---
+#===============================================================================
+
+use strict;
+use warnings;
+use utf8;
+
+use Net::MySQL;
+#create a handle to our mysql instance
+my $mysql = Net::MySQL->new(
+    # hostname => 'mysql.example.jp',   # Default use UNIX socket
+    database => 'test',
+    user     => 'root',
+    password => '123456'
+);
+ 
+# INSERT example
+$mysql->query(q{
+    INSERT INTO perlinks VALUES ("www.taobao.com")
+});
+printf "Affected row: %d\n", $mysql->get_affected_rows_length;
+ 
+{
+# SLECT example
+$mysql->query(q{SELECT * FROM perlinks});
+my $record_set = $mysql->create_record_iterator;
+while (my $record = $record_set->each) {
+    printf "First column: %s Next column: %s\n",
+        $record->[0], $record->[1];
+}
+#$mysql->close;
+}
+
+
+{
+# SLECT example
+$mysql->query(q{SELECT * FROM perlinks});
+my $a_record_iterator= $mysql->create_record_iterator;
+while (my $record = $a_record_iterator->each) {
+    printf "column1 : %s column2 : %s\n",
+        $record->[0], $record->[1];
+}
+#$mysql->close;
+}
+
+#create_database(db_name)
+$mysql->create_database("perltest");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

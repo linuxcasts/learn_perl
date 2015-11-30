@@ -1,0 +1,49 @@
+#!/usr/bin/env perl 
+#===============================================================================
+#
+#         FILE: smart_match.pl
+#
+#        USAGE: ./smart_match.pl  
+#
+#  DESCRIPTION: 
+#
+#      OPTIONS: ---
+# REQUIREMENTS: ---
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: YOUR NAME (), 
+# ORGANIZATION: 
+#      VERSION: 1.0
+#      CREATED: 11/27/2015 09:07:22 AM
+#     REVISION: ---
+#===============================================================================
+
+use strict;
+use warnings;
+use utf8;
+use v5.10;
+
+my	@array1=qw/bash perl java python/;
+my	@array2=@array1;
+say "the two array has same elements" if @array1 ~~ @array2;
+
+my	@nums=qw/1 32 34 23 57/;
+my	$maxnum=max(@nums);
+say $maxnum;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
